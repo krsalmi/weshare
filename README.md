@@ -13,5 +13,18 @@ Because I was writing a program for our specific situation, this program does no
  47 euros). The 'payments' dict is updated subtracting the general amount from each persons contributions.  
  After, in a larger while loop, the dict is sorted into two lists of tuples, one in ascending order by contributions and one in reverse.
  In the loop, the person who is the most in debt will pay the person who made the biggest contribution and so on. The transactions are
- saved in a little list [who 
+ saved in a little list \[who gets paid, who pays, how much\] which is then added to 'completed', a list of lists. People, who have
+ gotten to zero after a payment, are removed from the 'payments' dictionary. The loop will repeat until there are either no, or just one, person left in the 'payments' dictionary. When the program reaches its end, it prints the 'completed' list out in the form of
+ who pays who and how much. If there is one person left in the 'payments' dict, (which can happen if we have an uneven number of 
+ participants), the program states finally the amount of money that is 'lost' due to rounding etc.
+   
+   Final output  
+ <img width="325" alt="Screen Shot 2021-07-06 at 21 30 26" src="https://user-images.githubusercontent.com/57495339/124649880-b902c700-dea1-11eb-99ef-5657ad556756.png">
+
+ ### Things I learned
+ I'm glad I wrote this program in Python, partly because I'm still trying to learn the language, and partly because I felt that it
+ would fit this kind of problem well. I ended up using a lot of time understanding the data structures and how they might change. For
+ example, it took me a while to understand that a sorted dict is actually a list of tuples, and because of that, the points of data are
+ immutable. That's why I ended up updating the contributions of each person directly to the 'payments' dictionary, and not to the
+ sorted lists.
  
