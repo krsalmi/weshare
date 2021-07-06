@@ -11,7 +11,7 @@ Because I was writing a program for our specific situation, this program does no
 (except for Lukas, who we decided would pay 30 euros) and their contributions are saved in a dict called 'payments'. After subtracting
  Lukas' 30 euros, the sum is divided in 7 to get the general amount each of the 7 participants must pay (in our case, a little over 
  47 euros). The 'payments' dict is updated subtracting the general amount from each persons contributions.  
- After, in a larger while loop, the dict is sorted into two lists of tuples, one in ascending order by contributions and one in reverse.
+   After, in a larger while loop, the dict is sorted into two lists of tuples, one in ascending order by contributions and one in reverse.
  In the loop, the person who is the most in debt will pay the person who made the biggest contribution and so on. The transactions are
  saved in a little list \[who gets paid, who pays, how much\] which is then added to 'completed', a list of lists. People, who have
  gotten to zero after a payment, are removed from the 'payments' dictionary. The loop will repeat until there are either no, or just one, person left in the 'payments' dictionary. When the program reaches its end, it prints the 'completed' list out in the form of
