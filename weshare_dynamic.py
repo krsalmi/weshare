@@ -1,9 +1,11 @@
-# Calculates the remaining amount of money each person is owed/
-# in debt after subtracting the cost ('per_person') which is the same
-# for each participant.
+# Cost-sharing program where information is collected from command line arguments.
+# The share of each participant doesn't have to be the same, for example in the event
+# that one person has participated less time in the shared activities and thus
+# is seen to have to contribute less monetarily than other people. Program
 
 import sys
 from decimal import *
+from typing import Collection
 
 option_p = False
 
@@ -20,17 +22,17 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 def display_usage():
-  print("\nUsage: weshare_dynamic.py person_1 [contribution in euros] person_2 ...\
+  print(bcolors.WARNING + "\nUsage" + bcolors.ENDC + ": python3 weshare_dynamic.py person_1 [contribution in euros] person_2 ...\
   -p x% person_who_pays_less [contribution in euros]\n")
-  print("Write name of person followed by the amount that person contributed to the\
+  print(bcolors.WARNING + "Detailed instructions" + bcolors.ENDC +  ": Write name of person followed by the amount that person contributed to the\
   overall cost of the shared event. If a person made multiple payments, those can be\
   added as separate arguments. People who did not contribute to the costs must\
   have the number 0 as their payment.")
   print("\nOption '-p' precedes the info of the person who is seen to have to\
   contribute less than other people. '-p' option is followed by the percentage\
-  of what that person has to pay compared to other people. This is followed by\
+  of what that person has to pay compared to the other people. This is followed by\
   the name of the person and the amount they contributed.")
-  print("\nExample usage: \npythn weshare_dynamic.py Adam 350 Bertha 10 30 47 Cecilia 0 -p 50% David 0")
+  print(bcolors.WARNING + "\nExample usage" + bcolors.ENDC +": \npython3 weshare_dynamic.py Adam 350 Bertha 10 30 47 Cecilia 0 -p 50% David 0\n")
   exit()
 
 def check_if_number(n):
@@ -44,15 +46,18 @@ def check_if_number(n):
 def save_person_who_pays_less(args, paying_less):
   for index, arg in enumerate(args):
     if arg == "-p":
+      global option_p
       if index + 2 > len(args) - 1 or args[index + 1][-1] != '%':
         display_usage()
+      if option_p == True:
+        print(bcolors.FAIL + "Error" + bcolors.ENDC + ": '-p' option can be used only once")
+        exit(0)
       paying_less.append(args[index + 2])
       # convert percentage into a float number
       percentage = Decimal(args[index + 1][:-1]) / 100
       paying_less.append(percentage)
       args.pop(index + 1)
       args.pop(index)
-      global option_p
       option_p = True
   return(args)
 
@@ -73,26 +78,32 @@ def handle_command_line_args(args):
         num = check_if_number(args[j])
         if num is False:
           if (j == i + 1):
-            print("Error, all names must be followed by a number")
-            exit()
+            print(bcolors.FAIL + "Error" + bcolors.ENDC + ": all names must be followed by a number")
+            exit(0)
           else:
             break
         else:
           amount += num
         j += 1
     else:
-      print("Error, amount of money must be preceded by a name")
-      exit()
+      print(bcolors.FAIL + "Error" + bcolors.ENDC + ": amount of money must be preceded by a name")
+      exit(0)
     payments[name] = amount
     i = j
     j = i + 1
     amount = 0
   return (payments)
 
+# Calculates the remaining amount of money each person is owed/
+# in debt after subtracting the cost ('share_per_person') which is the same
+# for each participant, except in the case that -p option is triggered and
+# one person pays less than others.
 
 def calc_remaining_costs_per_person(payments, paying_less):
   all_costs = (sum(payments.values())).quantize(Decimal("1.00"))
-
+  if all_costs == 0:
+    print(bcolors.FAIL + "Error" + bcolors.ENDC + ": Sum of payments is 0 euros, no need to share costs.")
+    exit(0)
   print("\nSum of all payments is " + bcolors.OKBLUE + str(all_costs) + bcolors.ENDC + " euros.")
   num_of_people = len(payments) - 1 + paying_less[1] if option_p == True else len(payments)
   share_per_person = all_costs / num_of_people
@@ -117,15 +128,22 @@ def print_final_payments(completed):
     print(bcolors.OKCYAN + trio[1] + bcolors.ENDC + " will pay " + bcolors.OKCYAN + trio[0] + \
     bcolors.ENDC + ' ' + bcolors.OKGREEN +  str(trio[2].quantize(Decimal("1.00"))) + bcolors.ENDC + " euros")
 
+# Rounds the remaining payments to 0.01 precision and outputs the remaining payments and explanation
+# due to rounding in earlier functions for ex in calc_remaining_costs_per_person()
 def print_remaining(payments):
-  print("\nBecause of rounding, costs can not be shared 100% equally:")
-  for person, costs in payments.items():
-    print(bcolors.OKCYAN + person + bcolors.ENDC + " will end up paying ", end = " ")
-    if costs < 0:
-      print(bcolors.WARNING + str(costs * -1) + bcolors.ENDC + " euros too little.")
-    else:
-      print(bcolors.WARNING + str(costs) + bcolors.ENDC + " euros too much.")
-  print("")
+  for person in payments:
+    payments[person] = payments[person].quantize(Decimal('1.00'))
+    if payments[person] == 0:
+      del payments[person]
+  if payments:
+    print("\nBecause of rounding, costs can not be shared 100% equally:")
+    for person, costs in payments.items():
+      print(bcolors.OKCYAN + person + bcolors.ENDC + " will end up paying ", end= " ")
+      if costs < 0:
+        print(bcolors.WARNING + str((costs * -1).quantize(Decimal('1.00'))) + bcolors.ENDC + " euros too little.")
+      else:
+        print(bcolors.WARNING + str(costs.quantize(Decimal('1.00'))) + bcolors.ENDC + " euros too much.")
+    print("")
 
 def main():
   paying_less = []
@@ -172,12 +190,6 @@ def main():
 
   if (payments):
     print_remaining(payments)
-
-
-    # print(payments)
-    # payment_values = payments.values()
-    # lost_money = list(payment_values)[0]
-    # print("Because of rounding, " + str(lost_money.quantize(Decimal('1.00'))) + " euros will be lost.\n")
 
 if __name__ == "__main__":
   main()
