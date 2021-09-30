@@ -29,7 +29,7 @@ First, the arguments are checked to see if the '-p' option was used, and if it w
 At this point, weshare_dynamic.py starts to resemble my original weshare.py program more closely, except that when determining the 'share_per_person', one person will have a smaller share to pay, if the '-p' option was triggered.
   
 Example output:  
-![weshare_dynamic.py output](screenshots_for_readme/weshare_dynamic_screenshot.png | width=200)
+![weshare_dynamic.py output]("screenshots_for_readme/weshare_dynamic_screenshot.png" width="200")
 
   
 ## My original weshare.py program
