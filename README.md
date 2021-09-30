@@ -1,11 +1,37 @@
 # Almost WeShare
 ## My own modified version of a cost sharing program
-I was at a cabin with my friends for Midsummer and by the end of the weekend, we each had paid different amounts of money for food, 
-drinks, napkins, what-have-you, meant for the whole group. Originally we had thought about using a cost-sharing app, like WeShare, but
-finally decided against it, because one friend, Lukas, only stayed for one evening.  
-I wrote a cost-sharing program suitable for our exact situation, and I wanted to do it in Python, because I'm still getting familiar with
-the language.
+I was at a cabin with my friends for Midsummer and by the end of the weekend, we each had paid different amounts of money for food, drinks, napkins, what-have-you, meant for the whole group. Originally we had thought about using a cost-sharing app, like WeShare, but finally decided against it, because one friend only stayed for one evening.  
+I wrote a cost-sharing program suitable for our exact situation, and I wanted to do it in Python, because I'm still getting familiar with the language.
 
+## **__UPDATED VERSION weshare_dynamic.py AND WHAT CHANGED
+I continued working on this program and made a new version called ***weshare_dynamic.py***, in which names of people and the money they contributed can be added dynamically as command line arguments. This program also has a '-p' (percentage) option which allows for one person to pay less than other people. The '-p' argument is directly followed by a percentage which determines that person's share compared to other participants.  
+  ***weshare_dynamic.py*** differs from my original weshare.py
+(which I designed for a particular situation I needed a cost-sharing program for) also in other ways.
+  I wanted to experiment with the python Decimal library
+because I was a bit concerned about the potential floating point inaccuracy. However, because I will have to round the shares of people to a cent (0.01 euros) there will almost always be a slight inconsistency with money in / money out, and someone might end up paying a couple cents less than other people, infrmation which will also be printed out in the end.  
+I also added error checks, 'usage' instructions and clear, colored printing of the results.
+
+### How weshare_dynamic.py works
+The program takes the names and contributions of people as command line arguments. If no arguments are given, the following 'usage' instructions are printed:  
+'''
+Usage: python3 weshare_dynamic.py person_1 [contribution in euros] person_2 ...  -p x% person_who_pays_less [contribution in euros]  
+
+Detailed instructions: Write name of person followed by the amount that person contributed to the  overall cost of the shared event. If a person made multiple payments, those can be  added as separate arguments. People who did not contribute to the costs must  have the number 0 as their payment.  
+
+Option '-p' precedes the info of the person who is seen to have to  contribute less than other people. '-p' option is followed by the percentage  of what that person has to pay compared to the other people. This is followed by  the name of the person and the amount they contributed.  
+
+Example usage:  
+python3 weshare_dynamic.py Adam 350 Bertha 10 30 47 Cecilia 0 -p 50% David 0
+'''
+
+First, the arguments are checked to see if the '-p' option was used, and if it was, the name and share percentage is saved into a list. Then, each argument is checked more closely in order to save the names of people and the amounts they contributed as key-value pairs into a 'payments' dictionary.  
+   
+At this point, weshare_dynamic.py starts to resemble my original weshare.py program more closely, except that when determining the 'share_per_person', one person will have a smaller share to pay, if the '-p' option was triggered.
+  
+Example output:  
+
+  
+## My original weshare.py program
 ### How the program works
 Because I was writing a program for our specific situation, this program does not take arguments, it works as is. All participants 
 (except for Lukas, who we decided would pay 30 euros) and their contributions are saved in a dict called 'payments'. After subtracting
