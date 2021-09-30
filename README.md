@@ -29,7 +29,7 @@ First, the arguments are checked to see if the '-p' option was used, and if it w
 At this point, weshare_dynamic.py starts to resemble my original weshare.py program more closely, except that when determining the 'share_per_person', one person will have a smaller share to pay, if the '-p' option was triggered.
   
 Example output:  
-![weshare_dynamic.py output](screenshots_for_readme/weshare_dynamic_screenshot.png)
+![weshare_dynamic.py output](screenshots_for_readme/weshare_dynamic_screenshot.png | width=200)
 
   
 ## My original weshare.py program
@@ -46,7 +46,7 @@ Because I was writing a program for our specific situation, this program does no
  participants), the program states finally the amount of money that is 'lost' due to rounding etc.
    
    Final output  
- ![weshare.py output](screenshots_for_readme/weshare_screenshot.png)
+ ![weshare.py output](screenshots_for_readme/weshare_screenshot.png | width=200)
 
  ### Things I learned
  I'm glad I wrote this program in Python, partly because I'm still trying to learn the language, and partly because I felt that it
