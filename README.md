@@ -14,11 +14,16 @@ I also added error checks, 'usage' instructions and clear, colored printing of t
 ### How weshare_dynamic.py works
 The program takes the names and contributions of people as command line arguments. If no arguments are given, the following 'usage' instructions are printed:    
 ```
-Usage: python3 weshare_dynamic.py person_1 [contribution in euros] person_2 ...  -p x% person_who_pays_less [contribution in euros]  
+Usage: python3 weshare_dynamic.py person_1 [contribution in euros] person_2 ...  -p x% 
+person_who_pays_less [contribution in euros]  
 
-Detailed instructions: Write name of person followed by the amount that person contributed to the  overall cost of the shared event. If a person made multiple payments, those can be  added as separate arguments. People who did not contribute to the costs must  have the number 0 as their payment.  
+Detailed instructions: Write name of person followed by the amount that person contributed to the 
+overall cost of the shared event. If a person made multiple payments, those can be  added as separate
+arguments. People who did not contribute to the costs must  have the number 0 as their payment.  
 
-Option '-p' precedes the info of the person who is seen to have to  contribute less than other people. '-p' option is followed by the percentage  of what that person has to pay compared to the other people. This is followed by  the name of the person and the amount they contributed.  
+Option '-p' precedes the info of the person who is seen to have to  contribute less than other people.
+'-p' option is followed by the percentage  of what that person has to pay compared to the other people. 
+This is followed by  the name of the person and the amount they contributed.  
 
 Example usage:  
 python3 weshare_dynamic.py Adam 350 Bertha 10 30 47 Cecilia 0 -p 50% David 0  
