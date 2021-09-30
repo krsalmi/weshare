@@ -3,9 +3,9 @@
 I was at a cabin with my friends for Midsummer and by the end of the weekend, we each had paid different amounts of money for food, drinks, napkins, what-have-you, meant for the whole group. Originally we had thought about using a cost-sharing app, like WeShare, but finally decided against it, because one friend only stayed for one evening.  
 I wrote a cost-sharing program suitable for our exact situation, and I wanted to do it in Python, because I'm still getting familiar with the language.
 
-## **__UPDATED VERSION weshare_dynamic.py AND WHAT CHANGED
-I continued working on this program and made a new version called ***weshare_dynamic.py***, in which names of people and the money they contributed can be added dynamically as command line arguments. This program also has a '-p' (percentage) option which allows for one person to pay less than other people. The '-p' argument is directly followed by a percentage which determines that person's share compared to other participants.  
-  ***weshare_dynamic.py*** differs from my original weshare.py
+## *UPDATED VERSION* weshare_dynamic.py *AND WHAT CHANGED*
+I continued working on this program and made a new version called *weshare_dynamic.py*, in which names of people and the money they contributed can be added dynamically as command line arguments. This program also has a '-p' (percentage) option which allows for one person to pay less than other people. The '-p' argument is directly followed by a percentage which determines that person's share compared to other participants.  
+  *weshare_dynamic.py* differs from my original weshare.py
 (which I designed for a particular situation I needed a cost-sharing program for) also in other ways.
   I wanted to experiment with the python Decimal library
 because I was a bit concerned about the potential floating point inaccuracy. However, because I will have to round the shares of people to a cent (0.01 euros) there will almost always be a slight inconsistency with money in / money out, and someone might end up paying a couple cents less than other people, infrmation which will also be printed out in the end.  
@@ -29,6 +29,7 @@ First, the arguments are checked to see if the '-p' option was used, and if it w
 At this point, weshare_dynamic.py starts to resemble my original weshare.py program more closely, except that when determining the 'share_per_person', one person will have a smaller share to pay, if the '-p' option was triggered.
   
 Example output:  
+[weshare_dynamic.py output](screenshots_for_readme/weshare_dynamic_screenshot.png)
 
   
 ## My original weshare.py program
@@ -45,7 +46,7 @@ Because I was writing a program for our specific situation, this program does no
  participants), the program states finally the amount of money that is 'lost' due to rounding etc.
    
    Final output  
- <img width="325" alt="Screen Shot 2021-07-06 at 21 30 26" src="https://user-images.githubusercontent.com/57495339/124649880-b902c700-dea1-11eb-99ef-5657ad556756.png">
+ [weshare.py output](screenshots_for_readme/weshare_screenshot.png)
 
  ### Things I learned
  I'm glad I wrote this program in Python, partly because I'm still trying to learn the language, and partly because I felt that it
