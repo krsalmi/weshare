@@ -1,7 +1,7 @@
-# Cost-sharing program where information is collected from command line arguments.
-# The share of each participant doesn't have to be the same, for example in the event
+# Cost-sharing program for which information is collected from command line arguments.
+# The share of each participant doesn't have to be the same, for example, in the event
 # that one person has participated less time in the shared activities and thus
-# is seen to have to contribute less monetarily than other people. Program
+# is seen to have to contribute less monetarily than other people.
 
 import sys
 from decimal import *
@@ -9,7 +9,7 @@ from typing import Collection
 
 option_p = False
 
-# Color class from Blender build scripts:
+# Color class modeled after Blender build scripts:
 class bcolors:
     HEADER = '\033[95m'
     OKBLUE = '\033[94m'
@@ -43,6 +43,12 @@ def check_if_number(n):
     else:
         return Decimal(n)
 
+
+# Looks for the '-p' option and the percentage, name and contribution that follow. Saves the name
+# and percentage as a fraction to the list 'paying_less' and deletes the '-p' option and percentage from
+# the 'args'. If multiple '-p' arguments are found, or they are not valid, the program prints out an 
+# error message and exits. Function return the updated 'args' list.
+
 def save_person_who_pays_less(args, paying_less):
   for index, arg in enumerate(args):
     if arg == "-p":
@@ -62,11 +68,15 @@ def save_person_who_pays_less(args, paying_less):
   return(args)
 
 
+# Function goes through each itam on the 'args' list and saves the name of the person and the amount
+# they contributed into the dict 'payments'. A name can be followed by multiple payments, which will
+# be added together into the 'amount' variable. Names must be followed by a payment, otherwise an
+# error will occur and the program exits.
+
 def handle_command_line_args(args):
   len_arg = len(args) - 1
   if (len_arg <= 1):
     display_usage()
-
   payments = {}
   i = 1
   j = i + 1
@@ -93,6 +103,7 @@ def handle_command_line_args(args):
     j = i + 1
     amount = 0
   return (payments)
+
 
 # Calculates the remaining amount of money each person is owed/
 # in debt after subtracting the cost ('share_per_person') which is the same
@@ -121,15 +132,19 @@ def calc_remaining_costs_per_person(payments, paying_less):
     else:
       payments[person] -= share_per_person
 
-def print_final_payments(completed):
 
+# Prints the final payments rounding the amount to a cent
+
+def print_final_payments(completed):
   print("\nPayments to be made:")
   for trio in completed:
     print(bcolors.OKCYAN + trio[1] + bcolors.ENDC + " will pay " + bcolors.OKCYAN + trio[0] + \
     bcolors.ENDC + ' ' + bcolors.OKGREEN +  str(trio[2].quantize(Decimal("1.00"))) + bcolors.ENDC + " euros")
 
+
 # Rounds the remaining payments to 0.01 precision and outputs the remaining payments and explanation
-# due to rounding in earlier functions for ex in calc_remaining_costs_per_person()
+# due to rounding in earlier functions (for ex in calc_remaining_costs_per_person())
+
 def print_remaining(payments):
   for person in payments:
     payments[person] = payments[person].quantize(Decimal('1.00'))
@@ -155,19 +170,17 @@ def main():
   temp = [] # a list that will include [who gets paid, who pays, how much]
   completed = [] # will be a list of smaller 'temp' lists
 
-  # the while loop starts with defining two lists of tuples. 'sorted_min' will
+  # The while loop starts with defining two lists of tuples. 'sorted_min' will
   # have the participants and their owed money in an ascending list, the 'sorted_max'
   # will have the same list in reverse order.
   # The person who owes the most will end up paying the person who paid the most, etc.
-  # The person who gets paid, the person who pays, and the amount, will first saved as a
-  # temp list and then added to the 'completed' list of lists'. People, whose payments get
+  # The person who gets paid, the person who pays, and the amount, will first be saved as a
+  # 'temp' list and then added to the 'completed' list of lists. People, whose payments get
   # to 0 will be deleted from the 'payments' dictionary and until there is 1 or none
   # participants in the dictionary, the loop will start over again.
   while bool(payments) and len(payments) != 1:
     sorted_min = sorted(payments.items(),  key=lambda item: item[1])
-    # reverse sorted_min list
     sorted_max = sorted_min[::-1]
-
     i = 0
     while i < len(payments):
       if (sorted_min[i][1] < 0 and sorted_max[i][1] > 0):
@@ -187,9 +200,9 @@ def main():
       i += 1
 
   print_final_payments(completed)
-
   if (payments):
     print_remaining(payments)
+  return (0)
 
 if __name__ == "__main__":
   main()
